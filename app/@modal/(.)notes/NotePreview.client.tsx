@@ -1,7 +1,6 @@
 'use client';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import css from './NotePreview.module.css';
-import { useRouter } from 'next/router';
 import { useQuery } from '@tanstack/react-query';
 import { fetchNoteById } from '@/lib/api';
 import Modal from '@/components/Modal/Modal';
@@ -9,6 +8,7 @@ import Modal from '@/components/Modal/Modal';
 const NotePreview = () => {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
+
   const {
     data: note,
     isLoading,
@@ -16,14 +16,15 @@ const NotePreview = () => {
   } = useQuery({
     queryKey: ['note', id],
     queryFn: () => fetchNoteById(id),
-    refetchOnMount: false,
+    // refetchOnMount: false,
   });
 
   if (isLoading) {
     return <p className={css.loading}>Loading, please wait...</p>;
   }
   if (error || !note) {
-    throw error;
+    // throw error;
+    return <p className={css.error}>Note not found.</p>;
   }
   return (
     <Modal onClose={() => router.back()}>
