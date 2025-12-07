@@ -5,7 +5,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createNote } from '../../lib/api';
 import type { NoteTag } from '../../types/note';
 
-export interface NoteFormValueProps {
+export interface NoteFormValuesProps {
   title: string;
   content: string;
   tag: NoteTag;
@@ -15,7 +15,7 @@ interface NoteFormProps {
   onClose: () => void;
 }
 
-const initialValues: NoteFormValueProps = {
+const initialValues: NoteFormValuesProps = {
   title: '',
   content: '',
   tag: 'Todo',
@@ -34,7 +34,7 @@ export default function NoteForm({ onClose }: NoteFormProps) {
   const queryClient = useQueryClient();
 
   const mutationPost = useMutation({
-    mutationFn: async ({ title, content, tag }: NoteFormValueProps) => {
+    mutationFn: async ({ title, content, tag }: NoteFormValuesProps) => {
       const res = await createNote({ title, content, tag });
       return res;
     },
@@ -45,11 +45,14 @@ export default function NoteForm({ onClose }: NoteFormProps) {
     },
   });
 
-  const handleCreateNote = ({ title, content, tag }: NoteFormValueProps) => {
+  const handleCreateNote = ({ title, content, tag }: NoteFormValuesProps) => {
     mutationPost.mutate({ title, content, tag });
   };
 
-  const handleSubmit = (values: NoteFormValueProps, actions: FormikHelpers<NoteFormValueProps>) => {
+  const handleSubmit = (
+    values: NoteFormValuesProps,
+    actions: FormikHelpers<NoteFormValuesProps>
+  ) => {
     handleCreateNote(values);
     actions.resetForm();
   };
@@ -77,7 +80,6 @@ export default function NoteForm({ onClose }: NoteFormProps) {
           <div className={css.formGroup}>
             <label htmlFor="tag">Tag</label>
             <Field id="tag" name="tag" as="select" className={css.select}>
-              {' '}
               <option value="Todo">Todo</option>
               <option value="Work">Work</option>
               <option value="Personal">Personal</option>

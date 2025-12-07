@@ -1,14 +1,15 @@
 'use client';
-import Modal from '../../../../components/Modal/Modal';
-import NoteForm from '../../../../components/NoteForm/NoteForm';
+
+import { useEffect, useState } from 'react';
+import fetchNotes from '../../../../lib/api';
+import css from './page.module.css';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import NoteList from '../../../../components/NoteList/NoteList';
 import Pagination from '../../../../components/Pagination/Pagination';
+import Modal from '../../../../components/Modal/Modal';
 import SearchBox from '../../../../components/SearchBox/SearchBox';
-import fetchNotes from '../../../../lib/api';
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import css from './page.module.css';
+import NoteForm from '../../../../components/NoteForm/NoteForm';
 import { useDebouncedCallback } from 'use-debounce';
 
 export default function NotesClient({ tag }: { tag?: string }) {
@@ -26,7 +27,7 @@ export default function NotesClient({ tag }: { tag?: string }) {
     queryFn: () => fetchNotes(searchWord, page, tag),
     placeholderData: keepPreviousData,
   });
-  1;
+
   useEffect(() => {
     if (data?.notes.length === 0) {
       toast.error('There is nothing on request.');
@@ -36,7 +37,7 @@ export default function NotesClient({ tag }: { tag?: string }) {
   const handleOpenModal = () => {
     setOpenModal(true);
   };
-  const handleCloseMOdal = () => {
+  const handleCloseModal = () => {
     setOpenModal(false);
   };
 
@@ -60,8 +61,8 @@ export default function NotesClient({ tag }: { tag?: string }) {
       <Toaster />
       {data && data?.notes.length > 0 && <NoteList notes={data?.notes} />}
       {openModal && (
-        <Modal onClose={handleCloseMOdal}>
-          <NoteForm onClose={handleCloseMOdal} />
+        <Modal onClose={handleCloseModal}>
+          <NoteForm onClose={handleCloseModal} />
         </Modal>
       )}
     </div>
