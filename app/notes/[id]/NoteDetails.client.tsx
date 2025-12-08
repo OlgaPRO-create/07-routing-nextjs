@@ -1,12 +1,10 @@
 'use client';
 import css from './NoteDetails.module.css';
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
 import { fetchNoteById } from '@/lib/api';
 import { useRouter } from 'next/navigation';
 
-const NoteDetailsClient = () => {
-  const { id } = useParams<{ id: string }>();
+export default function NoteDetailsClient({ id }: { id: string }) {
   const router = useRouter();
   const {
     data: note,
@@ -41,6 +39,4 @@ const NoteDetailsClient = () => {
       </div>
     </div>
   );
-};
-
-export default NoteDetailsClient;
+}

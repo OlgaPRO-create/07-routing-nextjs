@@ -16,7 +16,7 @@ const NotePreview = () => {
   } = useQuery({
     queryKey: ['note', id],
     queryFn: () => fetchNoteById(id),
-    // refetchOnMount: false,
+    refetchOnMount: false,
   });
 
   if (isLoading) {
@@ -36,6 +36,7 @@ const NotePreview = () => {
               Back
             </button>
           </div>
+
           <p className={css.content}>{note?.content}</p>
           <p className={css.date}>{note?.createdAt}</p>
         </div>
